@@ -18,14 +18,18 @@ namespace DocumentConverter
             PocoGenerator = pocoGenerator;
             CsvWriter = csvWriter;
         }
-
+        /// <summary>
+        /// Reads the xlsx file from the given input file path and writes as a CSV file to the given output path
+        /// </summary>
+        /// <param name="inputFilePath">The complete path to the location of xlsx file which needs to be processed</param>
+        /// <param name="OutputFilePath">The complete path to which the output CSV should be written to</param>
         public void Execute(string inputFilePath, string OutputFilePath)
         {
             var dataSet = DataSetProvider.GetDataSet(inputFilePath);
 
             var skbData = PocoGenerator.GeneratePoco(dataSet, data => new SkbData(data));
 
-            //The Map values should be in the order we desire
+            //The Map column values should be in the order we desire ion output file
             ClassMap<SkbData> classMapFun() => new Factory()
                 .CreateClassMapBuilder<SkbData>()
                 .Map(m => m.UserId).Name("User ID")
